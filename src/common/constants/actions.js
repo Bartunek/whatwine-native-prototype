@@ -1,0 +1,46 @@
+// List of actions
+
+// App actions
+export const APP_MOUNTING = 'APP_MOUNTING';
+export const APP_NOTIFICATION_ADDED = 'APP_NOTIFICATION_ADDED';
+export const APP_NOTIFICATION_REMOVED = 'APP_NOTIFICATION_REMOVED';
+export const HNAV_BACK = 'HNAV_BACK';
+export const APP_ROUTER_BOOTSTRAPPED = 'APP_ROUTER_BOOTSTRAPPED';
+export const APP_ROUTER_ROUTE_CHANGED = 'APP_ROUTER_ROUTE_CHANGED';
+
+// Authentication actions
+export const WHATWINE_AUTH_RECEIVED = 'WHATWINE_AUTH_RECEIVED';
+export const USER_FB_STATUS_CHANGED = 'USER_FB_STATUS_CHANGED';
+export const USER_FB_LOGIN_PROMPT_REQUESTED = 'USER_FB_LOGIN_PROMPT_REQUESTED';
+export const USER_FB_GET_LOGIN_STATUS = 'USER_FB_GET_LOGIN_STATUS';
+
+// Wine History actions
+export const WINE_HISTORY_TOGGLED = 'WINE_HISTORY_TOGGLED';
+
+// Restaurants actions
+export const RS_GEOLOCATION_FAILED = 'RS_GEOLOCATION_FAILED';
+export const RS_GEOLOCATION_SUCCESSFUL = 'RS_GEOLOCATION_SUCCESSFUL';
+export const RS_FETCH_FAILED = 'RS_FETCH_FAILED';
+export const RS_FETCHED = 'RS_FETCHED';
+export const RS_SEARCHED = 'RS_SEARCHED';
+export const RS_MORE_REQUESTED = 'RS_MORE_REQUESTED';
+export const RS_MORE_FETCHED = 'RS_MORE_FETCHED';
+export const RS_MORE_FAILED = 'RS_MORE_FAILED';
+export const RS_INPUT_CLEARED = 'RS_INPUT_CLEARED';
+export const RS_CLICKED = 'RS_CLICKED';
+
+// DishSearch actions
+export const DS_FETCH_FAILED = 'DS_FETCH_FAILED';
+export const DS_FETCHED = 'DS_FETCHED';
+export const DS_SEARCHED = 'DS_SEARCHED';
+export const DS_INPUT_CLEARED = 'DS_INPUT_CLEARED';
+export const DS_CLICKED = 'DS_CLICKED';
+export const DS_REMOVED = 'DS_REMOVED';
+
+// WineDetails actions
+export const WS_FETCH_REQUESTED = 'WS_FETCH_REQUESTED';
+export const WS_FETCHED = 'WS_FETCHED';
+export const WS_WINE_VIEW_CHANGED = 'WS_WINE_VIEW_CHANGED';
+export const WS_SHOW_RATING = 'WS_SHOW_RATING';
+export const WS_HIDE_RATING = 'WS_HIDE_RATING';
+export const WS_UPDATE_RATING = 'WS_UPDATE_RATING';

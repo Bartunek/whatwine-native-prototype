@@ -1,0 +1,14 @@
+{
+  "name": "WhatwineAppNative",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "react-native start"
+  },
+  "dependencies": {
+    "color": "^0.11.1",
+    "immutable": "^3.7.6",
+    "react-native": "^0.18.0",
+    "react-native-vector-icons": "^1.0.4"
+  }
+}
