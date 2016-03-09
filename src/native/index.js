@@ -22,17 +22,12 @@ export default function index() {
       super(props);
 
       this.state = {
-        loading: true,
-        showSplash: false
+        showSplash: false,
+        screen: ''
       };
     }
 
     render() {
-      const restaurants = <Restaurants />;
-      const wines = <Wines />;
-      const splash = this.state.showSplash ? <SplashScreen /> : false;
-      const view = this.state.loading ? splash : wines;
-
       const { width, height } = Dimensions.get('window');
 
       return (
@@ -40,14 +35,29 @@ export default function index() {
           <Image source={bg}
             style={[styles.bg, { width, height }]}
             onLoad={this.showSplash.bind(this)} />
-          {view}
+          {this.renderView()}
         </View>
       );
     }
 
+    renderView() {
+      switch (this.state.screen) {
+        case 'wines':
+          return <Wines />;
+        case 'restaurants':
+          return <Restaurants onSelect={this.showWines.bind(this)} />;
+        default:
+          return this.state.showSplash ? <SplashScreen /> : false;
+      }
+    }
+
     showSplash() {
-      this.setState({showSplash: true});
-      setTimeout(() => this.setState({loading: false}), 3000);
+      this.setState({ showSplash: true });
+      setTimeout(() => this.setState({ screen: 'restaurants' }), 3000);
+    }
+
+    showWines() {
+      this.setState({ screen: 'wines' });
     }
   }
 

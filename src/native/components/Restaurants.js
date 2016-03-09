@@ -6,11 +6,11 @@ import React, {
   ListView,
   ToolbarAndroid,
   ScrollView,
+  PullToRefreshViewAndroid,
   TouchableHighlight,
   TextInput,
   Alert
 } from 'react-native';
-
 import Color from 'color';
 
 // Styles
@@ -32,7 +32,7 @@ import iconPlace from '../../img/icons/icon-place-black.png';
 import iconSearch from '../../img/icons/icon-search.png';
 
 // Mock data
-import data from '../../common/mockRestaurants';
+import restaurantsData from '../../common/mockRestaurants';
 
 export default class Restaurants extends Component {
 
@@ -44,10 +44,10 @@ export default class Restaurants extends Component {
     });
 
     this.state = {
-      ds: ds,
-      data: ds.cloneWithRows(
-        data.sort((a, b) => a.location.distance < b.location.distance )
-      )
+      ds,
+      data: ds.cloneWithRows(restaurantsData.sort(
+        (a, b) => a.location.distance < b.location.distance
+      ))
     };
   }
 
@@ -74,13 +74,17 @@ export default class Restaurants extends Component {
               underlineColorAndroid={$bgWhite} />
           </View>
         </View>
-        <ScrollView style={styles.scroll}>
-          <ListView style={styles.list}
-            pageSize={5}
-            initialListSize={1}
-            dataSource={this.state.data}
-            renderRow={this.renderRow.bind(this)} />
-        </ScrollView>
+        <PullToRefreshViewAndroid
+          style={styles.scroll}
+          onRefresh={this.onRefresh.bind(this)}>
+          <ScrollView style={styles.scroll}>
+            <ListView style={styles.list}
+              pageSize={5}
+              initialListSize={1}
+              dataSource={this.state.data}
+              renderRow={this.renderRow.bind(this)} />
+          </ScrollView>
+        </PullToRefreshViewAndroid>
       </View>
     );
   }
@@ -123,15 +127,23 @@ export default class Restaurants extends Component {
         {text: 'OK'}
       ]
     );
+
+    this.props.onSelect();
+  }
+
+  onRefresh() {
+    this.setState({
+      data: this.state.ds.cloneWithRows(restaurantsData.reverse())
+    })
   }
 
   onFilterChange(event) {
     const term = event.nativeEvent.text;
     const results = term.length > 0 ?
-      data
+      restaurantsData
         .filter(restaurant => restaurant.name.indexOf(term) > -1)
         .sort((a, b) => a.location.distance > b.location.distance ) :
-      data;
+      restaurantsData;
 
     this.setState({data: this.state.ds.cloneWithRows(results)});
   }

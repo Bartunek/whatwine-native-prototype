@@ -6,11 +6,18 @@ import React, {
   ViewPagerAndroid,
   StyleSheet
 } from 'react-native';
+import Color from 'color';
 
 import Icon from 'react-native-vector-icons/Foundation';
 import Dimensions from 'Dimensions';
 import Rating from './Rating';
 import RevealImage from './RevealImage';
+import ScoreGraph from './ScoreGraph';
+
+import wines from '../../common/mockWines';
+import ratings from '../../common/mockRatings';
+import info from '../../common/mockWineInfo';
+import dishes from '../../common/mockDishes';
 
 import bgWhite from '../../img/bg-wine-white.jpg';
 import bgRed from '../../img/bg-wine-red.jpg';
@@ -18,33 +25,13 @@ import bgRed from '../../img/bg-wine-red.jpg';
 import styles, { rating, typo } from '../../styles/wines';
 import { $starGray, $yellow, $purple, $marginGeneric } from '../../styles/main';
 
-const wines = [
-  { name: 'Cabernet Sauvignon' , rating: 4, price: '139', color: 'red'},
-  { name: 'Merlot'             , rating: 5, price: '158', color: 'red'},
-  { name: 'Sauvignon Blanc'    , rating: 3, price: '99' , color: 'white'},
-  { name: 'Burgundy'           , rating: 2, price: '199', color: 'red'},
-  { name: 'Margaret River'     , rating: 4, price: '176', color: 'white'}
-];
-
-const ratings = [
-  { name: 'Cedric M.', date: '29. 10. 2014', rating: 4, comment: 'This elegant medium-bodied wine offers aromas of cherry and spice.'},
-  { name: 'Mathew G.', date: '31. 11. 2014', rating: 1, comment: 'This wine is absolute garbage.'},
-  { name: 'Jiri S.', date: '2. 3. 2015', rating: 3, comment: 'Not worth to even think about this piece of shit. I think that the producer of this shit should kill himself with shotgun.'},
-  { name: 'Jan B.', date: '5. 10. 2015', rating: 2, comment: 'Taste like shit, looks like piss.'},
-];
-
-const info = [
-  { title: 'GRAPE', value: 'Sauvignon Blanc' },
-  { title: 'COUNTRY', value: 'New Zealand' },
-  { title: 'REGION', value: 'Marlborough' },
-  { title: 'SUBREGION', value: null },
-  { title: 'VILLAGE', value: null },
-  { title: 'STYLE', value: 'Light & Crisp' },
-]
-
 export default class Wines extends React.Component {
   static propTypes = {
     name: React.PropTypes.string,
+  };
+
+  static defaultProps = {
+    wines: wines
   };
 
   constructor(props) {
@@ -54,7 +41,10 @@ export default class Wines extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <ViewPagerAndroid style={styles.pager} initialPage={0}>
+        <ViewPagerAndroid
+          style={styles.pager}
+          initialPage={0}
+          onPageSelected={this.onPageChanged.bind(this)}>
           {this.renderItems()}
         </ViewPagerAndroid>
         <View style={styles.buttonContainer}>
@@ -73,7 +63,7 @@ export default class Wines extends React.Component {
     const { width } = Dimensions.get('window');
     const ovalWidth = (width / 4) - ($marginGeneric / 2);
 
-    return wines.map((wine, i) =>
+    return this.props.wines.map((wine, i) =>
       <View style={styles.page} key={i}>
         <Image source={ wine.color === 'red' ? bgRed : bgWhite }
           style={[styles.bg, { width, height: width * 1.09333 }]} />
@@ -82,6 +72,7 @@ export default class Wines extends React.Component {
           style={styles.scrollView}
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator={false}>
+          <ScoreGraph ref={'score' + i} score={Math.round(Math.random() * 100)} />
           <View style={[styles.oval, {
             width: ovalWidth,
             height: ovalWidth,
@@ -96,15 +87,14 @@ export default class Wines extends React.Component {
               activeColor={$yellow}
               style={styles.rating} />
             <View style={styles.dishes}>
-              <View style={styles.dish}>
-                <Text>Beef meatballs in tomato sauce with...</Text>
-              </View>
-              <View style={styles.dish}>
-                <Text>Crispy aromatic lamb</Text>
-              </View>
-              <View style={styles.dish}>
-                <Text>Crab raviolli</Text>
-              </View>
+              {dishes.map( (dish, i) =>
+                <View style={styles.dish} key={i}>
+                  <Text>{dish.name}</Text>
+                  <Text style={{color: this.getValueColor(dish.compliance)}}>
+                    {dish.compliance}%
+                  </Text>
+                </View>
+              )}
             </View>
           </View>
           <View style={rating.container}>
@@ -143,6 +133,18 @@ export default class Wines extends React.Component {
         </ScrollView>
       </View>
     );
+  }
+
+  onPageChanged(event) {
+    const {position} = event.nativeEvent;
+    console.log(`Showing wine #${position}`);
+  }
+
+  getValueColor(val) {
+    return Color()
+      .hsl(Math.round(val * 1.2), 90, 50)
+      .hexString();
+    // return `hsl(${Math.round(val * 1.2)} , 90%, 50%)`;
   }
 }
 

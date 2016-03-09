@@ -142,7 +142,9 @@ export default StyleSheet.create({
     borderTopColor: Color($gray).lighten(0.15).hexString(),
     borderTopWidth: .5,
     borderStyle: 'solid',
-    justifyContent: 'center',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     height: 40
   },
   info: {
